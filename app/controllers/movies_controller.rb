@@ -7,6 +7,20 @@ class MoviesController < ApplicationController
   end
 
   def index
+    #debugger
+    if params[:ratings].keys.length == 0
+      #params = session[:params]       
+    end
+      #@a = params[:ratings].keys.length
+      #flash[:notice] = "#{@a} was successfully created."
+
+    if params == nil or !params.keys.include?('ratings') or !params.keys.include?('order')
+      flash.keep
+      redirect_to movies_path(:redir => true, :order => 'title', :ratings => {"PG"=>"1", "PG-13"=>"1", "G"=>"1", "R"=>"1"}), id:'title_header' 
+    end
+
+    
+
     case params[:order] 
     when 'title'
       @htitle = 'hilite'
@@ -15,8 +29,7 @@ class MoviesController < ApplicationController
       @htitle = ''
       @hdate = 'hilite'
     end
-    @checked = params[:ratings].keys
-    
+    @checked = params[:ratings].keys    
     @all_ratings = Movie.select('rating').all.map { |e| e[:rating] }.uniq.sort
     @movies = Movie.where(rating: @checked).order(params[:order]).all    
   end
