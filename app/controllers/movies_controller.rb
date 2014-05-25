@@ -14,8 +14,11 @@ class MoviesController < ApplicationController
     when 'release_date'
       @htitle = ''
       @hdate = 'hilite'
-    end   
-    @movies = Movie.order(params[:order]).all    
+    end
+    @checked = params[:ratings].keys
+    
+    @all_ratings = Movie.select('rating').all.map { |e| e[:rating] }.uniq.sort
+    @movies = Movie.where(rating: @checked).order(params[:order]).all    
   end
 
   def new
