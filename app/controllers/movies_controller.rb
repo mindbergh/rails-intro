@@ -27,7 +27,7 @@ class MoviesController < ApplicationController
       #redirect_to movies_path(session[:params]), id:'title_header' 
       params[:ratings] = session[:params][:ratings]
     else
-      session[:params][:ratings] = params[:ratings]
+      session[:params] = params
     end
       #@a = params[:ratings].keys.length
       #flash[:notice] = "#{@a} was successfully created."
