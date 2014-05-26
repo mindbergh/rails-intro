@@ -8,16 +8,32 @@ class MoviesController < ApplicationController
 
   def index
     #debugger
-    if params[:ratings].keys.length == 0
+
+    if params == nil or (!params.keys.include?('ratings') and !params.keys.include?('order'))
+      flash.keep
+      flash[:notice] = "redirect_to1  from " + "#{params}"
+      session[:ratings] = {"PG"=>"1", "PG-13"=>"1", "G"=>"1", "R"=>"1"}
+      session[:order] = 'title'
+      redirect_to movies_path(:order => 'title', :ratings => {"PG"=>"1", "PG-13"=>"1", "G"=>"1", "R"=>"1"}), id:'title_header' 
+      return
+    end
+
+
+
+    if params[:ratings] == nil or params[:ratings].length == 0
       #params = session[:params]       
+      #flash.keep
+      #flash[:notice] = "redirect_to2"
+      #redirect_to movies_path(session[:params]), id:'title_header' 
+      params[:ratings] = session[:params][:ratings]
+    else
+      session[:params][:ratings] = params[:ratings]
     end
       #@a = params[:ratings].keys.length
       #flash[:notice] = "#{@a} was successfully created."
+      
 
-    if params == nil or !params.keys.include?('ratings') or !params.keys.include?('order')
-      flash.keep
-      redirect_to movies_path(:redir => true, :order => 'title', :ratings => {"PG"=>"1", "PG-13"=>"1", "G"=>"1", "R"=>"1"}), id:'title_header' 
-    end
+    
 
     
 
